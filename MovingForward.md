@@ -8,9 +8,9 @@ A simple program that reads a list of files from the IFS.  The big take-away is 
 
 The above list could go on, but with a easy way to view the IFS and source members we can get a better handle of the resources in the folder structure.  
 
-The plan is to modify the simple that we started with and to come up with a utility that will build the file listing IFS objects and then display with improved filtering and navigation. 
+The plan is to modify the simple that we started with and to come up with a utility that will build the file listing IFS objects and then display with improved filtering and navigation.  
 
-There will be a SHWIFS2 version of the utility. For now the functionalty will include the following: 
+There will be a SHWIFS2 version of the utility. For now the functionalty will include the following:  
 1- A filter screen to setup what files in the IFS will be picked up.  
 2- an ability to look at the attributes of an entry.  
 3- A stats function that will show the data used for each  
