@@ -51,3 +51,67 @@ WHERE SYSTEM_TABLE_SCHEMA = 'ScottK'
  and   FILE_TYPE = 'S' 
  and  TABLE_TYPE = 'P'  
     
+## OBJECTS 
+### PATHIFS file.  
+This is the input file to the program that was created by running the following: SQL statements 
+**1- Create the file** 
+CREATE OR REPLACE TABLE WSSBKFIX21.PATHIFS
+(PATH_NAME   CHAR(200), 
+ OBJECT_TYPE FOR COLUMN OBJTYP CHAR(10) , 
+ CREATE_TIMESTAMP FOR COLUMN CRTMSTMP TIMESTAMP,
+ LAST_USED_TIME_STAMP FOR COLUMN LSTTMSTMP TIMESTAMP,
+ DATA_SIZE INTEGER, 
+ CCSID INTEGER, 
+  TEXT_DESCRIPTION FOR COLUMN OBJTXT CHAR(50), 
+ PRIMARY KEY (PATH_NAME)
+ ) RCDFMT PATHIFSR  
+;
+Note the following: 
+old school Record format name to accomodate the RPG program 
+old school Primary key to accomodate the RPG program 
+
+**2- Populate the file** 
+INSERT INTO WSSBKFIX21.PATHIFS 
+(PATH_NAME, 
+ OBJECT_TYPE,
+ CREATE_TIMESTAMP,
+ LAST_USED_TIME_STAMP, 
+ DATA_SIZE, 
+ CCSID,  
+ TEXT_DESCRIPTION ) 
+ 
+SELECT PATH_NAME,OBJECT_TYPE,CREATE_TIMESTAMP,LAST_USED_TIMESTAMP,
+       DATA_SIZE, CCSID, TEXT_DESCRIPTION 
+FROM TABLE(QSYS2.IFS_OBJECT_STATISTICS('/home/WSSBKFIX2', 'YES'))
+WHERE 
+upper(PATH_NAME) 
+LIKE '%.RPGLE' 
+OR 
+upper(PATH_NAME) 
+LIKE '%.SQLRPGLE'
+OR
+upper(PATH_NAME) LIKE '%.DSPF'
+OR 
+upper(PATH_NAME) LIKE '%.PF'
+OR 
+upper(PATH_NAME) LIKE '%.LF'     
+ORDER BY PATH_NAME
+
+Note: 
+The where clause eliminates all but the source files in the IFS
+
+### SHWIFS1  Display file 
+This is a simple subfile program with a subfile and page size the same 9999. 
+
+### SHWIFS1 rpg program 
+SHWIFS1: This is a simple program that reads the PATHIFS file (created by running the QSY2.IFS_OBJECT_STATISTICS view) It is a non-elastic subfile 
+where the system takes care of all of the paging.  Counting on less than 9999 records in the subfile.  
+
+No SQL in this program, just simple F spec access.  It is completely in free. 
+
+## Setup 
+1- Create the PATHIFS table 
+2- Populate the PATHIFS table. You can make this table small or large depending on the where clause 
+3- Run program CALL SHOWIFS1 
+   You can use the position to option to navigate the list. 
+   
