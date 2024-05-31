@@ -11,7 +11,7 @@ the need to check the CCSID of each source member. I found some SQL views that l
 the IFS files I needed to check. I also needed to get a list of physical file source members. 
 There are multiple ways of doing this, but I decided to also use a SQL view to do this.  
 
-Running SQL statements against those views gave me want I needed. I wrote some CLLE programs that copied files from the IFS to 
+Running SQL statements against those views gave me what I needed. I wrote some CLLE programs that copied files from the IFS to 
 physical file source members, and then back to the IFS. I could use the translation defaults in using CPYFRMSTMF command to get
 IFS files to the source members. On copying members back to the IFS I made sure the target had the *PCASCII value to the CCSID for the 
 IFS files.  
